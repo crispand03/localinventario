@@ -55,10 +55,10 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="sticky top-0 z-40 bg-blue-700 text-white">
-        <div className="flex items-center justify-between px-4 py-4">
-          <button onClick={onCancel} className="p-2 -ml-2 active:bg-blue-800 rounded-lg">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 pb-24 pb-safe">
+      <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onCancel} className="p-2 -ml-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-semibold">{variant ? 'Editar Versión' : 'Nueva Versión'}</h1>
@@ -98,20 +98,20 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
           <h3 className="font-medium text-gray-700">💰 Precio y Stock</h3>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-gray-600 mb-1">Precio Venta *</label>
+              <label className="block text-sm text-gray-600 mb-1">Precio Venta (S/.) *</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">S/.</span>
                 <input type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required
-                  className="w-full border border-gray-300 rounded-xl pl-7 pr-3 py-3 focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-300 rounded-xl pl-11 pr-3 py-3 focus:ring-2 focus:ring-blue-500"
                   placeholder="0.00" />
               </div>
             </div>
             <div>
-              <label className="block text-sm text-gray-600 mb-1">Costo</label>
+              <label className="block text-sm text-gray-600 mb-1">Costo (S/.)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">S/.</span>
                 <input type="number" step="0.01" value={cost} onChange={(e) => setCost(e.target.value)}
-                  className="w-full border border-gray-300 rounded-xl pl-7 pr-3 py-3 focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-300 rounded-xl pl-11 pr-3 py-3 focus:ring-2 focus:ring-blue-500"
                   placeholder="0.00" />
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
             <div className="bg-green-50 rounded-xl p-3">
               <p className="text-xs text-green-700">
                 Margen: <strong>{Math.round(((parseFloat(price) - parseFloat(cost)) / parseFloat(cost)) * 100)}%</strong>
-                {' '}({((parseFloat(price) - parseFloat(cost))).toFixed(2)} por unidad)
+                {' '}(S/. {((parseFloat(price) - parseFloat(cost))).toFixed(2)} por unidad)
               </p>
             </div>
           )}
@@ -199,7 +199,7 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
         </div>
 
         <button type="submit"
-          className="w-full bg-blue-600 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 active:bg-blue-700 shadow-lg shadow-blue-200">
+          className="w-full bg-blue-600 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 active:bg-blue-700 shadow-lg shadow-blue-200 tap-target transition-colors">
           <Save size={22} />
           {variant ? 'Guardar Cambios' : 'Crear Versión'}
         </button>

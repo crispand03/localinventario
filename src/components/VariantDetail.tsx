@@ -48,14 +48,14 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="sticky top-0 z-40 bg-blue-700 text-white">
-        <div className="flex items-center justify-between px-4 py-4">
-          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 pb-24 pb-safe">
+      <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-semibold truncate px-2">Detalle Versión</h1>
-          <button onClick={handleShare} className="p-2 -mr-2 active:bg-blue-800 rounded-lg">
+          <button onClick={handleShare} className="p-2 -mr-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <Share2 size={20} />
           </button>
         </div>
@@ -87,7 +87,7 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
             <p className="text-[10px] text-gray-400">Mín: {variant.minStock}</p>
           </div>
           <div className="bg-white rounded-xl p-3 shadow-sm">
-            <p className="text-xs text-gray-500">Precio</p>
+            <p className="text-xs text-gray-500">Precio (S/.)</p>
             <p className="text-xl font-bold text-blue-600">{formatCurrency(variant.price)}</p>
             <p className="text-[10px] text-gray-400">Costo: {formatCurrency(variant.cost)}</p>
           </div>
@@ -109,7 +109,7 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
 
         {/* Adjust Stock Button */}
         <button onClick={() => setShowStockModal(true)}
-          className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-medium flex items-center justify-center gap-2 active:bg-blue-700">
+          className="w-full bg-blue-600 text-white py-4 rounded-xl font-medium flex items-center justify-center gap-2 active:bg-blue-700 tap-target transition-colors">
           <Plus size={18} /> Ajustar Stock
         </button>
 
@@ -179,11 +179,11 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
         {/* Actions */}
         <div className="flex gap-3">
           <button onClick={onEdit}
-            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3.5 rounded-xl font-medium active:bg-blue-700">
+            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3.5 rounded-xl font-medium active:bg-blue-700 tap-target transition-colors">
             <Edit size={18} /> Editar
           </button>
           <button onClick={handleDelete}
-            className="flex items-center justify-center gap-2 bg-red-100 text-red-700 px-5 py-3.5 rounded-xl font-medium active:bg-red-200">
+            className="flex items-center justify-center gap-2 bg-red-100 text-red-700 px-5 py-3.5 rounded-xl font-medium active:bg-red-200 tap-target transition-colors">
             <Trash2 size={18} />
           </button>
         </div>
@@ -191,8 +191,8 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
 
       {/* Stock Adjustment Modal */}
       {showStockModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50" onClick={() => setShowStockModal(false)}>
-          <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 animate-fade-in" onClick={() => setShowStockModal(false)}>
+          <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 pb-safe space-y-4 animate-in" onClick={e => e.stopPropagation()}>
             <h2 className="text-lg font-bold text-gray-800">± Ajustar Stock</h2>
             <p className="text-sm text-gray-500">Stock actual: <strong>{variant.stock}</strong> unidades</p>
             
@@ -203,12 +203,12 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
                 placeholder="Ej: 5 o -3" />
               <div className="flex gap-2 mt-2">
                 <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') + 1).toString())}
-                  className="flex-1 py-2 bg-green-100 text-green-700 rounded-lg font-medium flex items-center justify-center gap-1">
-                  <Plus size={16} /> Entrada
+                  className="flex-1 py-3 bg-green-100 text-green-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-green-200 transition-colors">
+                  <Plus size={18} /> Entrada
                 </button>
                 <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') - 1).toString())}
-                  className="flex-1 py-2 bg-red-100 text-red-700 rounded-lg font-medium flex items-center justify-center gap-1">
-                  <Minus size={16} /> Salida
+                  className="flex-1 py-3 bg-red-100 text-red-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-red-200 transition-colors">
+                  <Minus size={18} /> Salida
                 </button>
               </div>
             </div>
@@ -239,9 +239,9 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
 
             <div className="flex gap-3">
               <button onClick={() => setShowStockModal(false)}
-                className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium">Cancelar</button>
+                className="flex-1 py-3.5 bg-gray-100 text-gray-700 rounded-xl font-medium tap-target active:bg-gray-200 transition-colors">Cancelar</button>
               <button onClick={handleStockSubmit}
-                className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium active:bg-blue-700">Confirmar</button>
+                className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl font-medium tap-target active:bg-blue-700 transition-colors">Confirmar</button>
             </div>
           </div>
         </div>

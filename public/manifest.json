@@ -1,12 +1,14 @@
 {
   "name": "InventarioPro - Gestión de Equipos",
   "short_name": "InventarioPro",
-  "description": "Aplicación para gestión de inventario de equipos de cómputo",
+  "description": "Aplicación PWA para gestión de inventario de equipos de cómputo",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#1e40af",
   "orientation": "portrait-primary",
+  "lang": "es-PE",
   "icons": [
     {
       "src": "/icons/icon-192.svg",
@@ -22,5 +24,21 @@
     }
   ],
   "categories": ["business", "productivity"],
-  "lang": "es"
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Nuevo Modelo",
+      "short_name": "Nuevo",
+      "description": "Agregar nuevo modelo de equipo",
+      "url": "/?action=add",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Ver Inventario",
+      "short_name": "Inventario",
+      "description": "Ver todos los modelos",
+      "url": "/?action=list",
+      "icons": [{ "src": "/icons/icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
 }

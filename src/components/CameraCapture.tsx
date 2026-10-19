@@ -88,8 +88,8 @@ export default function CameraCapture({ onCapture, currentPhoto }: CameraCapture
   if (isCameraOpen) {
     return (
       <div className="fixed inset-0 z-50 bg-black flex flex-col">
-        <div className="flex items-center justify-between p-4 bg-black/80">
-          <button onClick={closeCamera} className="text-white p-2">
+        <div className="flex items-center justify-between p-4 bg-black/80 pt-safe">
+          <button onClick={closeCamera} className="text-white p-2 tap-target flex items-center justify-center">
             <X size={24} />
           </button>
           <span className="text-white font-medium">Tomar Foto</span>
@@ -105,22 +105,22 @@ export default function CameraCapture({ onCapture, currentPhoto }: CameraCapture
           />
           <canvas ref={canvasRef} className="hidden" />
         </div>
-        <div className="flex items-center justify-center gap-8 p-6 bg-black/80">
+        <div className="flex items-center justify-center gap-8 p-6 bg-black/80 pb-safe">
           <button
             onClick={handleFileSelect}
-            className="text-white p-3 rounded-full bg-gray-700 active:bg-gray-600"
+            className="text-white p-3 rounded-full bg-gray-700 active:bg-gray-600 tap-target flex items-center justify-center transition-colors"
           >
             <RefreshCw size={24} />
           </button>
           <button
             onClick={capturePhoto}
-            className="w-16 h-16 rounded-full border-4 border-white bg-white/20 active:bg-white/40 flex items-center justify-center"
+            className="w-18 h-18 rounded-full border-4 border-white bg-white/20 active:bg-white/40 flex items-center justify-center transition-colors tap-target"
           >
-            <div className="w-12 h-12 rounded-full bg-white" />
+            <div className="w-14 h-14 rounded-full bg-white" />
           </button>
           <button
             onClick={closeCamera}
-            className="text-white p-3 rounded-full bg-green-600 active:bg-green-700"
+            className="text-white p-3 rounded-full bg-green-600 active:bg-green-700 tap-target flex items-center justify-center transition-colors"
           >
             <Check size={24} />
           </button>

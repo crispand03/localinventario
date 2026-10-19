@@ -174,7 +174,7 @@ export default function ModelList({ models, onSelect, onAdd, initialFilter }: Mo
 
       {/* FAB */}
       <button onClick={onAdd}
-        className="fixed bottom-24 right-4 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700 z-30">
+        className="fixed bottom-28 bottom-safe right-4 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700 z-30 tap-target transition-transform active:scale-95">
         <Plus size={28} className="text-white" />
       </button>
     </div>

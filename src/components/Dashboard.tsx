@@ -197,7 +197,7 @@ function QuickAction({ emoji, label, color, textColor, onClick }: { emoji: strin
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-1.5 p-3.5 ${color} rounded-xl active:opacity-80 transition-opacity`}
+      className={`flex flex-col items-center gap-1.5 p-3.5 ${color} rounded-xl active:opacity-80 transition-opacity tap-target`}
     >
       <span className="text-2xl">{emoji}</span>
       <span className={`text-xs font-medium ${textColor}`}>{label}</span>

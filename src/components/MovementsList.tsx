@@ -32,10 +32,10 @@ export default function MovementsList({ movements, models, onBack }: MovementsLi
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="sticky top-0 z-40 bg-blue-700 text-white">
-        <div className="flex items-center justify-between px-4 py-4">
-          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 pb-24 pb-safe">
+      <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-semibold">Movimientos de Stock</h1>

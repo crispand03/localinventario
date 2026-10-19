@@ -37,15 +37,15 @@ export default function ModelDetail({ model, onEdit, onDelete, onBack, onAddVari
   const specsEntries = Object.entries(model.baseSpecs).filter(([, v]) => v);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 pb-24 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-blue-700 text-white">
-        <div className="flex items-center justify-between px-4 py-4">
-          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg">
+      <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onBack} className="p-2 -ml-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-semibold truncate px-2">Detalle del Modelo</h1>
-          <button onClick={handleShare} className="p-2 -mr-2 active:bg-blue-800 rounded-lg">
+          <button onClick={handleShare} className="p-2 -mr-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <Share2 size={20} />
           </button>
         </div>
@@ -150,7 +150,7 @@ export default function ModelDetail({ model, onEdit, onDelete, onBack, onAddVari
                   </button>
                   <div className="flex gap-2 mt-2 pt-2 border-t border-gray-50">
                     <button onClick={() => onAdjustStock(v)}
-                      className="flex-1 text-xs text-blue-600 font-medium py-1 bg-blue-50 rounded-lg active:bg-blue-100">
+                      className="flex-1 text-xs text-blue-600 font-medium py-2.5 bg-blue-50 rounded-lg active:bg-blue-100 tap-target transition-colors">
                       ± Ajustar Stock
                     </button>
                   </div>
@@ -178,11 +178,11 @@ export default function ModelDetail({ model, onEdit, onDelete, onBack, onAddVari
         {/* Actions */}
         <div className="flex gap-3">
           <button onClick={onEdit}
-            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3.5 rounded-xl font-medium active:bg-blue-700">
+            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3.5 rounded-xl font-medium active:bg-blue-700 tap-target transition-colors">
             <Edit size={18} /> Editar
           </button>
           <button onClick={handleDelete}
-            className="flex items-center justify-center gap-2 bg-red-100 text-red-700 px-5 py-3.5 rounded-xl font-medium active:bg-red-200">
+            className="flex items-center justify-center gap-2 bg-red-100 text-red-700 px-5 py-3.5 rounded-xl font-medium active:bg-red-200 tap-target transition-colors">
             <Trash2 size={18} />
           </button>
         </div>

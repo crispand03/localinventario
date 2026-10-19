@@ -234,11 +234,11 @@ export default function App() {
   const showNav = !['add-model', 'edit-model', 'add-variant', 'edit-variant'].includes(view);
 
   return (
-    <div className="min-h-screen bg-gray-50 max-w-lg mx-auto relative">
-      <div className={showNav ? 'pb-20' : ''}>
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative">
+      <div className={showNav ? 'pb-24 pb-safe' : 'pb-safe'}>
         {(view === 'dashboard' || view === 'list') && (
-          <div className="sticky top-0 z-40 bg-blue-700 text-white">
-            <div className="flex items-center justify-between px-4 py-4">
+          <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+            <div className="flex items-center justify-between px-4 py-3">
               <div>
                 <h1 className="text-lg font-bold">
                   {view === 'dashboard' ? '📊 Dashboard' : '📋 Inventario'}
@@ -249,7 +249,7 @@ export default function App() {
               </div>
               {view === 'list' && (
                 <button onClick={() => setView('add-model')}
-                  className="bg-white text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold active:bg-blue-50 flex items-center gap-1">
+                  className="bg-white text-blue-700 px-4 py-2.5 rounded-xl text-sm font-semibold active:bg-blue-50 flex items-center gap-1 tap-target transition-colors">
                   <Plus size={16} /> Nuevo
                 </button>
               )}
@@ -261,21 +261,21 @@ export default function App() {
 
       {/* Install PWA Banner */}
       {installPrompt && view === 'dashboard' && (
-        <div className="fixed bottom-20 left-4 right-4 max-w-lg mx-auto bg-blue-600 text-white p-3 rounded-xl shadow-lg flex items-center gap-3 z-50">
+        <div className="fixed left-4 right-4 max-w-lg mx-auto bg-blue-600 text-white p-3 rounded-xl shadow-lg flex items-center gap-3 z-50 pwa-install-prompt">
           <span className="text-xl">📲</span>
           <div className="flex-1">
             <p className="text-sm font-medium">Instalar App</p>
             <p className="text-xs text-blue-200">Accede rápido desde tu pantalla de inicio</p>
           </div>
-          <button onClick={handleInstall} className="bg-white text-blue-700 px-3 py-1.5 rounded-lg text-xs font-semibold">Instalar</button>
-          <button onClick={() => setInstallPrompt(null)} className="text-blue-200 p-1">✕</button>
+          <button onClick={handleInstall} className="bg-white text-blue-700 px-3 py-1.5 rounded-lg text-xs font-semibold min-h-[44px]">Instalar</button>
+          <button onClick={() => setInstallPrompt(null)} className="text-blue-200 p-2 min-h-[44px] min-w-[44px]">✕</button>
         </div>
       )}
 
       {/* Settings Modal */}
       {showSettings && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50" onClick={() => setShowSettings(false)}>
-          <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 animate-fade-in" onClick={() => setShowSettings(false)}>
+          <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 pb-safe space-y-4 animate-in" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-800">⚙️ Ajustes</h2>
               <button onClick={() => setShowSettings(false)} className="text-gray-400 p-2">✕</button>
@@ -308,15 +308,15 @@ export default function App() {
 
       {/* Bottom Navigation */}
       {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
-          <div className="max-w-lg mx-auto flex items-center justify-around py-2">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-200 z-40 ios-blur bottom-safe">
+          <div className="max-w-lg mx-auto flex items-center justify-around py-2 pb-safe">
             <NavButton icon={<Home size={22} />} label="Inicio" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
             <NavButton icon={<List size={22} />} label="Modelos" active={view === 'list' || view === 'model-detail' || view === 'variant-detail'} onClick={() => setView('list')} />
-            <button onClick={() => setView('add-model')} className="flex flex-col items-center -mt-6">
-              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700">
+            <button onClick={() => setView('add-model')} className="flex flex-col items-center -mt-5 tap-target">
+              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700 transition-colors">
                 <Plus size={28} className="text-white" />
               </div>
-              <span className="text-[10px] text-blue-600 font-medium mt-1">Nuevo</span>
+              <span className="text-[10px] text-blue-600 font-medium mt-0.5">Nuevo</span>
             </button>
             <NavButton icon={<span className="text-lg">📋</span>} label="Movimientos" active={view === 'movements'} onClick={() => setView('movements')} />
             <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />

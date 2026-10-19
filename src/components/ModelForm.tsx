@@ -50,11 +50,11 @@ export default function ModelForm({ model, onSave, onCancel }: ModelFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen min-h-[100dvh] bg-gray-50 pb-24 pb-safe">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-blue-700 text-white">
-        <div className="flex items-center justify-between px-4 py-4">
-          <button onClick={onCancel} className="p-2 -ml-2 active:bg-blue-800 rounded-lg">
+      <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button onClick={onCancel} className="p-2 -ml-2 active:bg-blue-800 rounded-lg tap-target flex items-center justify-center">
             <ArrowLeft size={24} />
           </button>
           <h1 className="text-lg font-semibold">{model ? 'Editar Modelo' : 'Nuevo Modelo'}</h1>
@@ -166,7 +166,7 @@ export default function ModelForm({ model, onSave, onCancel }: ModelFormProps) {
 
         {/* Submit */}
         <button type="submit"
-          className="w-full bg-blue-600 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 active:bg-blue-700 shadow-lg shadow-blue-200">
+          className="w-full bg-blue-600 text-white py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 active:bg-blue-700 shadow-lg shadow-blue-200 tap-target transition-colors">
           <Save size={22} />
           {model ? 'Guardar Cambios' : 'Crear Modelo'}
         </button>
