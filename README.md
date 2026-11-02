@@ -1,0 +1,2 @@
+# localinventario
+inventariolocal
