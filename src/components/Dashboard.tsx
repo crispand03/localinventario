@@ -168,11 +168,11 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
       {/* Quick Actions */}
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <h3 className="font-semibold text-gray-800 mb-3">Acciones Rápidas</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <QuickAction emoji="➕" label="Nuevo Modelo" color="bg-blue-50" textColor="text-blue-700" onClick={() => onNavigate('add-model')} />
-          <QuickAction emoji="📋" label="Ver Inventario" color="bg-purple-50" textColor="text-purple-700" onClick={() => onNavigate('list')} />
-          <QuickAction emoji="📥" label="Entrada Stock" color="bg-green-50" textColor="text-green-700" onClick={() => onNavigate('stock-in')} />
-          <QuickAction emoji="📤" label="Salida Stock" color="bg-red-50" textColor="text-red-700" onClick={() => onNavigate('stock-out')} />
+          <QuickAction emoji="🛒" label="Nueva Venta" color="bg-green-50" textColor="text-green-700" onClick={() => onNavigate('sales')} />
+          <QuickAction emoji="📋" label="Inventario" color="bg-purple-50" textColor="text-purple-700" onClick={() => onNavigate('list')} />
+          <QuickAction emoji="📥" label="Entrada Stock" color="bg-cyan-50" textColor="text-cyan-700" onClick={() => onNavigate('stock-in')} />
           <QuickAction emoji="🔄" label="Movimientos" color="bg-orange-50" textColor="text-orange-700" onClick={() => onNavigate('movements')} />
           <QuickAction emoji="⚠️" label="Alertas" color="bg-amber-50" textColor="text-amber-700" onClick={() => onNavigate('alerts')} />
         </div>

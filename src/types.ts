@@ -78,3 +78,61 @@ export interface InventoryStats {
   byType: Record<EquipmentType, { models: number; stock: number; value: number }>;
   recentMovements: StockMovement[];
 }
+
+// Sales
+export type DocumentType = 'factura' | 'boleta' | 'recibo';
+export type PaymentMethod = 'efectivo' | 'tarjeta' | 'transferencia' | 'yape' | 'plin' | 'credito';
+
+export interface Customer {
+  type: DocumentType;
+  // Factura
+  ruc?: string;
+  companyName?: string;
+  // Boleta
+  firstName?: string;
+  lastName?: string;
+  dni?: string;
+  // Common
+  address?: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface SaleItem {
+  variantId: string;
+  modelId: string;
+  modelName: string;
+  variantName: string;
+  sku: string;
+  quantity: number;
+  unitPrice: number;
+  unitCost: number;
+  discount: number;
+  subtotal: number;
+}
+
+export interface Sale {
+  id: string;
+  documentNumber: string; // F001-000001, B001-000001, R001-000001
+  documentType: DocumentType;
+  customer: Customer;
+  items: SaleItem[];
+  subtotal: number;
+  igv: number; // 18%
+  total: number;
+  totalCost: number;
+  profit: number;
+  paymentMethod: PaymentMethod;
+  notes: string;
+  date: string;
+  createdAt: string;
+}
+
+export interface SalesStats {
+  totalSales: number;
+  totalRevenue: number;
+  totalProfit: number;
+  avgTicket: number;
+  byDocumentType: Record<DocumentType, { count: number; total: number }>;
+  recentSales: Sale[];
+}
