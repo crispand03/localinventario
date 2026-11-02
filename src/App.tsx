@@ -18,6 +18,8 @@ import SaleForm from './components/SaleForm';
 import SaleDetail from './components/SaleDetail';
 import Modal from './components/Modal';
 import ScrollToTop from './components/ScrollToTop';
+import ScrollProgressBar from './components/ScrollProgressBar';
+import ScrollHint from './components/ScrollHint';
 
 type MobileView = 'dashboard' | 'list' | 'add-model' | 'edit-model' | 'model-detail' | 'add-variant' | 'edit-variant' | 'variant-detail' | 'movements' | 'alerts' | 'sales' | 'add-sale' | 'sale-detail';
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
@@ -334,6 +336,7 @@ export default function App() {
     
     return (
       <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative overflow-y-auto">
+        <ScrollProgressBar />
         <div className={showNav ? 'pb-24 pb-safe' : 'pb-safe'}>
           {(mobileView === 'dashboard' || mobileView === 'list' || mobileView === 'sales') && (
             <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
@@ -434,6 +437,8 @@ export default function App() {
       onExport={handleExport}
       onImport={handleImport}
     >
+      <ScrollProgressBar />
+      <ScrollHint />
       {renderDesktopView()}
       <ScrollToTop />
     </DesktopLayout>
