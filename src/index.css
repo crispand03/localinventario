@@ -4,23 +4,33 @@
   * {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+    box-sizing: border-box;
   }
   
   html {
     -webkit-text-size-adjust: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-gray-50 text-gray-900 antialiased;
     overscroll-behavior: none;
-    /* Safe area padding for iPhone */
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
     min-height: 100vh;
     min-height: 100dvh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* iOS Safe Area Handling */
+  @supports (padding: max(0px)) {
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
   }
 
   /* iOS input zoom fix - font size must be 16px */
@@ -29,6 +39,16 @@
     -webkit-appearance: none;
     appearance: none;
     border-radius: 12px;
+    max-width: 100%;
+  }
+
+  /* Fix for iOS select dropdown */
+  select {
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
   }
 
   /* iOS select fix */
@@ -192,6 +212,107 @@
   right: 1rem;
   max-width: 28rem;
   margin: 0 auto;
+  z-index: 60;
+}
+
+/* Modal animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Better touch targets */
+  button, [role="button"] {
+    min-height: 44px;
+  }
+
+  /* Fix for iOS keyboard */
+  .fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  /* Improve spacing on small screens */
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Better card spacing */
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  /* Fix bottom navigation */
+  nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Improve header spacing */
+  .sticky {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Better button sizing */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Desktop modal centering */
+@media (min-width: 769px) {
+  .modal-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
 }
 
 /* Pull to refresh prevention */

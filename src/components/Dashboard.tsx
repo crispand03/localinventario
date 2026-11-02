@@ -1,6 +1,9 @@
 import { InventoryStats, EquipmentType } from '../types';
 import { getTypeLabel, getTypeIcon, formatCurrency, formatNumber } from '../utils/inventory';
-import { AlertTriangle, Package, TrendingUp, DollarSign, BarChart3, Clock } from 'lucide-react';
+import { AlertTriangle, Package, TrendingUp, DollarSign, BarChart3, Clock, HelpCircle } from 'lucide-react';
+import { useState } from 'react';
+import IPhoneHelp from './IPhoneHelp';
+import { useIsIOS } from '../hooks/useDevice';
 
 interface DashboardProps {
   stats: InventoryStats;
@@ -8,16 +11,30 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ stats, onNavigate }: DashboardProps) {
+  const [showHelp, setShowHelp] = useState(false);
+  const { isIOS } = useIsIOS();
+
   return (
     <div className="space-y-5">
       {/* Hero Card */}
       <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-5 text-white shadow-lg">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-bold">InventarioPro</h2>
             <p className="text-blue-100 text-sm mt-0.5">Gestión inteligente de equipos</p>
           </div>
-          <div className="text-4xl">📊</div>
+          <div className="flex items-center gap-2">
+            {isIOS && (
+              <button 
+                onClick={() => setShowHelp(true)}
+                className="p-2 bg-white/20 rounded-lg active:bg-white/30 transition-colors"
+                title="Ayuda para iPhone"
+              >
+                <HelpCircle size={20} />
+              </button>
+            )}
+            <div className="text-4xl">📊</div>
+          </div>
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="bg-white/15 backdrop-blur rounded-xl p-3 text-center">
@@ -177,6 +194,9 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
           <QuickAction emoji="⚠️" label="Alertas" color="bg-amber-50" textColor="text-amber-700" onClick={() => onNavigate('alerts')} />
         </div>
       </div>
+
+      {/* iPhone Help Modal */}
+      <IPhoneHelp isOpen={showHelp} onClose={() => setShowHelp(false)} />
     </div>
   );
 }

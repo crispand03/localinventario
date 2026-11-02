@@ -16,6 +16,7 @@ import AlertsList from './components/AlertsList';
 import SalesList from './components/SalesList';
 import SaleForm from './components/SaleForm';
 import SaleDetail from './components/SaleDetail';
+import Modal from './components/Modal';
 
 type MobileView = 'dashboard' | 'list' | 'add-model' | 'edit-model' | 'model-detail' | 'add-variant' | 'edit-variant' | 'variant-detail' | 'movements' | 'alerts' | 'sales' | 'add-sale' | 'sale-detail';
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
@@ -369,37 +370,34 @@ export default function App() {
           </div>
         )}
 
-        {showSettings && (
-          <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 animate-fade-in" onClick={() => setShowSettings(false)}>
-            <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 pb-safe space-y-4 animate-in" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-gray-800">⚙️ Ajustes</h2>
-                <button onClick={() => setShowSettings(false)} className="text-gray-400 p-2">✕</button>
+        <Modal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          title="⚙️ Ajustes"
+          size="sm"
+        >
+          <div className="space-y-3">
+            <button onClick={() => { handleExport(); setShowSettings(false); }}
+              className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100 hover:bg-gray-100 transition-colors">
+              <span className="text-2xl">📥</span>
+              <div className="text-left">
+                <p className="font-medium text-gray-800">Exportar Datos</p>
+                <p className="text-xs text-gray-500">Descargar inventario completo en JSON</p>
               </div>
-              <div className="space-y-3">
-                <button onClick={() => { handleExport(); setShowSettings(false); }}
-                  className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100">
-                  <span className="text-2xl">📥</span>
-                  <div className="text-left">
-                    <p className="font-medium text-gray-800">Exportar Datos</p>
-                    <p className="text-xs text-gray-500">Descargar inventario completo en JSON</p>
-                  </div>
-                </button>
-                <button onClick={() => { handleImport(); setShowSettings(false); }}
-                  className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100">
-                  <span className="text-2xl">📤</span>
-                  <div className="text-left">
-                    <p className="font-medium text-gray-800">Importar Datos</p>
-                    <p className="text-xs text-gray-500">Cargar inventario desde archivo JSON</p>
-                  </div>
-                </button>
+            </button>
+            <button onClick={() => { handleImport(); setShowSettings(false); }}
+              className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100 hover:bg-gray-100 transition-colors">
+              <span className="text-2xl">📤</span>
+              <div className="text-left">
+                <p className="font-medium text-gray-800">Importar Datos</p>
+                <p className="text-xs text-gray-500">Cargar inventario desde archivo JSON</p>
               </div>
-              <div className="border-t pt-4">
-                <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • PWA</p>
-              </div>
-            </div>
+            </button>
           </div>
-        )}
+          <div className="border-t pt-4 mt-4">
+            <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • PWA</p>
+          </div>
+        </Modal>
 
         {showNav && (
           <nav className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-200 z-40 ios-blur bottom-safe">
