@@ -3,6 +3,7 @@ import { ArrowLeft, Edit, Trash2, Share2, Minus, Plus } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Variant, EquipmentModel } from '../types';
 import { getStatusLabel, getStatusColor, formatCurrency, getMovementLabel } from '../utils/inventory';
+import Modal from './Modal';
 
 interface VariantDetailProps {
   variant: Variant;
@@ -190,62 +191,64 @@ export default function VariantDetail({ variant, model, onEdit, onDelete, onBack
       </div>
 
       {/* Stock Adjustment Modal */}
-      {showStockModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 animate-fade-in" onClick={() => setShowStockModal(false)}>
-          <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 pb-safe space-y-4 animate-in" onClick={e => e.stopPropagation()}>
-            <h2 className="text-lg font-bold text-gray-800">± Ajustar Stock</h2>
-            <p className="text-sm text-gray-500">Stock actual: <strong>{variant.stock}</strong> unidades</p>
-            
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Cantidad (+ entrada / - salida)</label>
-              <input type="number" value={stockDelta} onChange={(e) => setStockDelta(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:ring-2 focus:ring-blue-500"
-                placeholder="Ej: 5 o -3" />
-              <div className="flex gap-2 mt-2">
-                <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') + 1).toString())}
-                  className="flex-1 py-3 bg-green-100 text-green-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-green-200 transition-colors">
-                  <Plus size={18} /> Entrada
-                </button>
-                <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') - 1).toString())}
-                  className="flex-1 py-3 bg-red-100 text-red-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-red-200 transition-colors">
-                  <Minus size={18} /> Salida
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Motivo *</label>
-              <select value={stockReason} onChange={(e) => setStockReason(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500">
-                <option value="">Seleccionar motivo...</option>
-                <option value="Compra/Recepción">Compra/Recepción</option>
-                <option value="Venta">Venta</option>
-                <option value="Asignación a empleado">Asignación a empleado</option>
-                <option value="Devolución">Devolución</option>
-                <option value="Ajuste de inventario">Ajuste de inventario</option>
-                <option value="Daño/Pérdida">Daño/Pérdida</option>
-                <option value="Transferencia">Transferencia</option>
-                <option value="Otro">Otro</option>
-              </select>
-            </div>
-
-            {stockDelta && (
-              <div className={`p-3 rounded-xl ${parseInt(stockDelta) > 0 ? 'bg-green-50' : 'bg-red-50'}`}>
-                <p className={`text-sm font-medium ${parseInt(stockDelta) > 0 ? 'text-green-700' : 'text-red-700'}`}>
-                  Nuevo stock: {Math.max(0, variant.stock + parseInt(stockDelta))} unidades
-                </p>
-              </div>
-            )}
-
-            <div className="flex gap-3">
-              <button onClick={() => setShowStockModal(false)}
-                className="flex-1 py-3.5 bg-gray-100 text-gray-700 rounded-xl font-medium tap-target active:bg-gray-200 transition-colors">Cancelar</button>
-              <button onClick={handleStockSubmit}
-                className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl font-medium tap-target active:bg-blue-700 transition-colors">Confirmar</button>
+      <Modal
+        isOpen={showStockModal}
+        onClose={() => setShowStockModal(false)}
+        title="± Ajustar Stock"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500">Stock actual: <strong>{variant.stock}</strong> unidades</p>
+          
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Cantidad (+ entrada / - salida)</label>
+            <input type="number" value={stockDelta} onChange={(e) => setStockDelta(e.target.value)}
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:ring-2 focus:ring-blue-500"
+              placeholder="Ej: 5 o -3" />
+            <div className="flex gap-2 mt-2">
+              <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') + 1).toString())}
+                className="flex-1 py-3 bg-green-100 text-green-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-green-200 transition-colors">
+                <Plus size={18} /> Entrada
+              </button>
+              <button type="button" onClick={() => setStockDelta((parseInt(stockDelta || '0') - 1).toString())}
+                className="flex-1 py-3 bg-red-100 text-red-700 rounded-xl font-medium flex items-center justify-center gap-1 tap-target active:bg-red-200 transition-colors">
+                <Minus size={18} /> Salida
+              </button>
             </div>
           </div>
+
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Motivo *</label>
+            <select value={stockReason} onChange={(e) => setStockReason(e.target.value)}
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500">
+              <option value="">Seleccionar motivo...</option>
+              <option value="Compra/Recepción">Compra/Recepción</option>
+              <option value="Venta">Venta</option>
+              <option value="Asignación a empleado">Asignación a empleado</option>
+              <option value="Devolución">Devolución</option>
+              <option value="Ajuste de inventario">Ajuste de inventario</option>
+              <option value="Daño/Pérdida">Daño/Pérdida</option>
+              <option value="Transferencia">Transferencia</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          {stockDelta && (
+            <div className={`p-3 rounded-xl ${parseInt(stockDelta) > 0 ? 'bg-green-50' : 'bg-red-50'}`}>
+              <p className={`text-sm font-medium ${parseInt(stockDelta) > 0 ? 'text-green-700' : 'text-red-700'}`}>
+                Nuevo stock: {Math.max(0, variant.stock + parseInt(stockDelta))} unidades
+              </p>
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            <button onClick={() => setShowStockModal(false)}
+              className="flex-1 py-3.5 bg-gray-100 text-gray-700 rounded-xl font-medium tap-target active:bg-gray-200 transition-colors">Cancelar</button>
+            <button onClick={handleStockSubmit}
+              className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl font-medium tap-target active:bg-blue-700 transition-colors">Confirmar</button>
+          </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }

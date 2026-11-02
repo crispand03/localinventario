@@ -16,6 +16,7 @@ import AlertsList from './components/AlertsList';
 import SalesList from './components/SalesList';
 import SaleForm from './components/SaleForm';
 import SaleDetail from './components/SaleDetail';
+import Modal from './components/Modal';
 
 type MobileView = 'dashboard' | 'list' | 'add-model' | 'edit-model' | 'model-detail' | 'add-variant' | 'edit-variant' | 'variant-detail' | 'movements' | 'alerts' | 'sales' | 'add-sale' | 'sale-detail';
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
@@ -369,37 +370,34 @@ export default function App() {
           </div>
         )}
 
-        {showSettings && (
-          <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 animate-fade-in" onClick={() => setShowSettings(false)}>
-            <div className="w-full max-w-lg bg-white rounded-t-3xl p-6 pb-safe space-y-4 animate-in" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-gray-800">⚙️ Ajustes</h2>
-                <button onClick={() => setShowSettings(false)} className="text-gray-400 p-2">✕</button>
+        <Modal
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          title="⚙️ Ajustes"
+          size="sm"
+        >
+          <div className="space-y-3">
+            <button onClick={() => { handleExport(); setShowSettings(false); }}
+              className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100 hover:bg-gray-100 transition-colors">
+              <span className="text-2xl">📥</span>
+              <div className="text-left">
+                <p className="font-medium text-gray-800">Exportar Datos</p>
+                <p className="text-xs text-gray-500">Descargar inventario completo en JSON</p>
               </div>
-              <div className="space-y-3">
-                <button onClick={() => { handleExport(); setShowSettings(false); }}
-                  className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100">
-                  <span className="text-2xl">📥</span>
-                  <div className="text-left">
-                    <p className="font-medium text-gray-800">Exportar Datos</p>
-                    <p className="text-xs text-gray-500">Descargar inventario completo en JSON</p>
-                  </div>
-                </button>
-                <button onClick={() => { handleImport(); setShowSettings(false); }}
-                  className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100">
-                  <span className="text-2xl">📤</span>
-                  <div className="text-left">
-                    <p className="font-medium text-gray-800">Importar Datos</p>
-                    <p className="text-xs text-gray-500">Cargar inventario desde archivo JSON</p>
-                  </div>
-                </button>
+            </button>
+            <button onClick={() => { handleImport(); setShowSettings(false); }}
+              className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl active:bg-gray-100 hover:bg-gray-100 transition-colors">
+              <span className="text-2xl">📤</span>
+              <div className="text-left">
+                <p className="font-medium text-gray-800">Importar Datos</p>
+                <p className="text-xs text-gray-500">Cargar inventario desde archivo JSON</p>
               </div>
-              <div className="border-t pt-4">
-                <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • PWA</p>
-              </div>
-            </div>
+            </button>
           </div>
-        )}
+          <div className="border-t pt-4 mt-4">
+            <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • PWA</p>
+          </div>
+        </Modal>
 
         {showNav && (
           <nav className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-200 z-40 ios-blur bottom-safe">
@@ -414,11 +412,11 @@ export default function App() {
                 <span className="text-[10px] font-medium">Ventas</span>
               </button>
               <button onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
-                className="flex flex-col items-center -mt-5 tap-target">
-                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700 transition-transform active:scale-95">
-                  <Plus size={28} className="text-white" />
+                className="flex flex-col items-center -mt-6 tap-target group">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-elegant group-active:scale-95 transition-all group-hover:shadow-glow">
+                  <Plus size={30} className="text-white" strokeWidth={2.5} />
                 </div>
-                <span className="text-[10px] text-blue-600 font-medium mt-0.5">Nuevo</span>
+                <span className="text-[11px] text-blue-600 font-semibold mt-1">Nuevo</span>
               </button>
               <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
             </div>
@@ -444,9 +442,15 @@ export default function App() {
 function NavButton({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick}
-      className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors ${active ? 'text-blue-600' : 'text-gray-400'}`}>
-      {icon}
-      <span className="text-[10px] font-medium">{label}</span>
+      className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all ${
+        active 
+          ? 'text-blue-600 bg-blue-50' 
+          : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+      }`}>
+      <div className="transition-transform active:scale-90">
+        {icon}
+      </div>
+      <span className="text-[11px] font-semibold">{label}</span>
     </button>
   );
 }

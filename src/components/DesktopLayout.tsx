@@ -1,5 +1,6 @@
 import { Home, List, Plus, Settings, ShoppingCart, FileText, AlertTriangle, TrendingUp, Download, Upload } from 'lucide-react';
 import { useState } from 'react';
+import Modal from './Modal';
 
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
 
@@ -67,37 +68,34 @@ export default function DesktopLayout({ currentSection, onNavigate, children, on
       </main>
 
       {/* Settings Modal */}
-      {showSettings && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowSettings(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md space-y-4" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-gray-800">⚙️ Ajustes</h2>
-              <button onClick={() => setShowSettings(false)} className="text-gray-400 p-2">✕</button>
+      <Modal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        title="⚙️ Ajustes"
+        size="sm"
+      >
+        <div className="space-y-3">
+          <button onClick={() => { onExport(); setShowSettings(false); }}
+            className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <Download size={22} className="text-blue-600" />
+            <div className="text-left">
+              <p className="font-medium text-gray-800">Exportar Datos</p>
+              <p className="text-xs text-gray-500">Descargar inventario completo</p>
             </div>
-            <div className="space-y-3">
-              <button onClick={() => { onExport(); setShowSettings(false); }}
-                className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                <Download size={22} className="text-blue-600" />
-                <div className="text-left">
-                  <p className="font-medium text-gray-800">Exportar Datos</p>
-                  <p className="text-xs text-gray-500">Descargar inventario completo</p>
-                </div>
-              </button>
-              <button onClick={() => { onImport(); setShowSettings(false); }}
-                className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                <Upload size={22} className="text-green-600" />
-                <div className="text-left">
-                  <p className="font-medium text-gray-800">Importar Datos</p>
-                  <p className="text-xs text-gray-500">Cargar desde archivo JSON</p>
-                </div>
-              </button>
+          </button>
+          <button onClick={() => { onImport(); setShowSettings(false); }}
+            className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <Upload size={22} className="text-green-600" />
+            <div className="text-left">
+              <p className="font-medium text-gray-800">Importar Datos</p>
+              <p className="text-xs text-gray-500">Cargar desde archivo JSON</p>
             </div>
-            <div className="border-t pt-4">
-              <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • Desktop</p>
-            </div>
-          </div>
+          </button>
         </div>
-      )}
+        <div className="border-t pt-4 mt-4">
+          <p className="text-center text-xs text-gray-400">InventarioPro v2.0 • Desktop</p>
+        </div>
+      </Modal>
     </div>
   );
 }

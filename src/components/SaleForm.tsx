@@ -3,6 +3,7 @@ import { ArrowLeft, Save, Plus, Trash2, Search } from 'lucide-react';
 import { EquipmentModel, Variant, Sale, SaleItem, Customer, DocumentType, PaymentMethod } from '../types';
 import { generateDocumentNumber, addSale } from '../utils/sales';
 import { formatCurrency } from '../utils/inventory';
+import Modal from './Modal';
 
 interface SaleFormProps {
   models: EquipmentModel[];
@@ -344,61 +345,62 @@ export default function SaleForm({ models, onSave, onCancel }: SaleFormProps) {
       </form>
 
       {/* Product Picker Modal */}
-      {showProductPicker && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-end" onClick={() => setShowProductPicker(false)}>
-          <div className="w-full bg-white rounded-t-3xl max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
-            <div className="p-4 border-b border-gray-200">
-              <h2 className="text-lg font-bold text-gray-800 mb-3">Seleccionar Producto</h2>
-              <div className="relative">
-                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar producto..."
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500" />
-              </div>
-            </div>
-            <div className="flex-1 overflow-y-auto p-4 space-y-2">
-              {!selectedModel ? (
-                filteredModels.map(m => (
-                  <button key={m.id} onClick={() => setSelectedModel(m)}
-                    className="w-full bg-gray-50 rounded-xl p-3 text-left active:bg-gray-100">
-                    <p className="font-medium text-gray-800">{m.brand} {m.model}</p>
-                    <p className="text-xs text-gray-500">{m.variants.length} versiones disponibles</p>
-                  </button>
-                ))
-              ) : (
-                <>
-                  <button onClick={() => setSelectedModel(null)}
-                    className="text-blue-600 text-sm font-medium mb-2">← Volver a modelos</button>
-                  <p className="font-medium text-gray-800 mb-2">{selectedModel.brand} {selectedModel.model}</p>
-                  {selectedModel.variants.map(v => (
-                    <div key={v.id} className="bg-gray-50 rounded-xl p-3 space-y-2">
-                      <div>
-                        <p className="font-medium text-sm text-gray-800">{v.name}</p>
-                        <p className="text-xs text-gray-500 font-mono">{v.sku}</p>
-                        <p className="text-sm font-bold text-blue-600 mt-1">{formatCurrency(v.price)}</p>
-                        <p className="text-xs text-gray-500">Stock: {v.stock}</p>
-                      </div>
-                      {v.stock > 0 && (
-                        <div className="flex gap-2">
-                          <input type="number" min="1" max={v.stock} defaultValue="1" id={`qty-${v.id}`}
-                            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm" />
-                          <button onClick={() => {
-                            const qty = parseInt((document.getElementById(`qty-${v.id}`) as HTMLInputElement)?.value || '1');
-                            addItem(selectedModel, v, qty);
-                          }}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium active:bg-blue-700">
-                            Agregar
-                          </button>
-                        </div>
-                      )}
+      <Modal
+        isOpen={showProductPicker}
+        onClose={() => setShowProductPicker(false)}
+        title="Seleccionar Producto"
+        size="lg"
+      >
+        <div className="space-y-4">
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Buscar producto..."
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {!selectedModel ? (
+              filteredModels.map(m => (
+                <button key={m.id} onClick={() => setSelectedModel(m)}
+                  className="w-full bg-gray-50 rounded-xl p-3 text-left active:bg-gray-100 hover:bg-gray-100 transition-colors">
+                  <p className="font-medium text-gray-800">{m.brand} {m.model}</p>
+                  <p className="text-xs text-gray-500">{m.variants.length} versiones disponibles</p>
+                </button>
+              ))
+            ) : (
+              <>
+                <button onClick={() => setSelectedModel(null)}
+                  className="text-blue-600 text-sm font-medium mb-2 hover:underline">← Volver a modelos</button>
+                <p className="font-medium text-gray-800 mb-2">{selectedModel.brand} {selectedModel.model}</p>
+                {selectedModel.variants.map(v => (
+                  <div key={v.id} className="bg-gray-50 rounded-xl p-3 space-y-2">
+                    <div>
+                      <p className="font-medium text-sm text-gray-800">{v.name}</p>
+                      <p className="text-xs text-gray-500 font-mono">{v.sku}</p>
+                      <p className="text-sm font-bold text-blue-600 mt-1">{formatCurrency(v.price)}</p>
+                      <p className="text-xs text-gray-500">Stock: {v.stock}</p>
                     </div>
-                  ))}
-                </>
-              )}
-            </div>
+                    {v.stock > 0 && (
+                      <div className="flex gap-2">
+                        <input type="number" min="1" max={v.stock} defaultValue="1" id={`qty-${v.id}`}
+                          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+                        <button onClick={() => {
+                          const qty = parseInt((document.getElementById(`qty-${v.id}`) as HTMLInputElement)?.value || '1');
+                          addItem(selectedModel, v, qty);
+                        }}
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium active:bg-blue-700 hover:bg-blue-700 transition-colors">
+                          Agregar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }
