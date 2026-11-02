@@ -400,25 +400,22 @@ export default function App() {
         </Modal>
 
         {showNav && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-200 z-40 ios-blur bottom-safe">
-            <div className="max-w-lg mx-auto flex items-center justify-around py-2 pb-safe">
-              <NavButton icon={<Home size={22} />} label="Inicio" active={mobileView === 'dashboard'} onClick={() => setMobileView('dashboard')} />
-              <NavButton icon={<List size={22} />} label="Modelos" active={mobileView === 'list' || mobileView === 'model-detail' || mobileView === 'variant-detail'} onClick={() => setMobileView('list')} />
-              <button onClick={() => setMobileView('sales')}
-                className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors ${
-                  mobileView === 'sales' || mobileView === 'sale-detail' ? 'text-green-600' : 'text-gray-400'
-                }`}>
-                <ShoppingCart size={22} />
-                <span className="text-[10px] font-medium">Ventas</span>
-              </button>
-              <button onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
-                className="flex flex-col items-center -mt-6 tap-target group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-elegant group-active:scale-95 transition-all group-hover:shadow-glow">
-                  <Plus size={30} className="text-white" strokeWidth={2.5} />
-                </div>
-                <span className="text-[11px] text-blue-600 font-semibold mt-1">Nuevo</span>
-              </button>
-              <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
+          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg">
+            <div className="max-w-lg mx-auto px-2 py-2" style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}>
+              <div className="flex items-center justify-around">
+                <NavButton icon={<Home size={22} />} label="Inicio" active={mobileView === 'dashboard'} onClick={() => setMobileView('dashboard')} />
+                <NavButton icon={<List size={22} />} label="Modelos" active={mobileView === 'list' || mobileView === 'model-detail' || mobileView === 'variant-detail'} onClick={() => setMobileView('list')} />
+                <button 
+                  onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
+                  className="flex flex-col items-center -mt-6 relative">
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+                    <Plus size={28} className="text-white" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-[10px] text-blue-600 font-semibold mt-1">Nuevo</span>
+                </button>
+                <NavButton icon={<ShoppingCart size={22} />} label="Ventas" active={mobileView === 'sales' || mobileView === 'sale-detail' || mobileView === 'add-sale'} onClick={() => setMobileView('sales')} />
+                <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
+              </div>
             </div>
           </nav>
         )}
