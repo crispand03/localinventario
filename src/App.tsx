@@ -412,11 +412,11 @@ export default function App() {
                 <span className="text-[10px] font-medium">Ventas</span>
               </button>
               <button onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
-                className="flex flex-col items-center -mt-5 tap-target">
-                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-300 active:bg-blue-700 transition-transform active:scale-95">
-                  <Plus size={28} className="text-white" />
+                className="flex flex-col items-center -mt-6 tap-target group">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-elegant group-active:scale-95 transition-all group-hover:shadow-glow">
+                  <Plus size={30} className="text-white" strokeWidth={2.5} />
                 </div>
-                <span className="text-[10px] text-blue-600 font-medium mt-0.5">Nuevo</span>
+                <span className="text-[11px] text-blue-600 font-semibold mt-1">Nuevo</span>
               </button>
               <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
             </div>
@@ -442,9 +442,15 @@ export default function App() {
 function NavButton({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick}
-      className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors ${active ? 'text-blue-600' : 'text-gray-400'}`}>
-      {icon}
-      <span className="text-[10px] font-medium">{label}</span>
+      className={`flex flex-col items-center gap-1 py-2 px-4 rounded-xl transition-all ${
+        active 
+          ? 'text-blue-600 bg-blue-50' 
+          : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+      }`}>
+      <div className="transition-transform active:scale-90">
+        {icon}
+      </div>
+      <span className="text-[11px] font-semibold">{label}</span>
     </button>
   );
 }

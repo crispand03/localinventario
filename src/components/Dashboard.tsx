@@ -17,47 +17,47 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
   return (
     <div className="space-y-5">
       {/* Hero Card */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-5 text-white shadow-lg">
-        <div className="flex items-center justify-between">
+      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-6 text-white shadow-lg">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex-1">
-            <h2 className="text-xl font-bold">InventarioPro</h2>
-            <p className="text-blue-100 text-sm mt-0.5">Gestión inteligente de equipos</p>
+            <h2 className="text-2xl font-bold tracking-tight">InventarioPro</h2>
+            <p className="text-blue-100 text-sm mt-1 font-medium">Gestión inteligente de equipos</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {isIOS && (
               <button 
                 onClick={() => setShowHelp(true)}
-                className="p-2 bg-white/20 rounded-lg active:bg-white/30 transition-colors"
+                className="p-2.5 bg-white/20 rounded-xl active:bg-white/30 transition-all hover:bg-white/25"
                 title="Ayuda para iPhone"
               >
-                <HelpCircle size={20} />
+                <HelpCircle size={22} />
               </button>
             )}
-            <div className="text-4xl">📊</div>
+            <div className="text-5xl">📊</div>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="bg-white/15 backdrop-blur rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold">{stats.totalModels}</p>
-            <p className="text-[10px] text-blue-100">Modelos</p>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center card-hover">
+            <p className="text-3xl font-bold tracking-tight">{stats.totalModels}</p>
+            <p className="text-xs text-blue-100 mt-1 font-medium">Modelos</p>
           </div>
-          <div className="bg-white/15 backdrop-blur rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold">{formatNumber(stats.totalStock)}</p>
-            <p className="text-[10px] text-blue-100">Unidades</p>
+          <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center card-hover">
+            <p className="text-3xl font-bold tracking-tight">{formatNumber(stats.totalStock)}</p>
+            <p className="text-xs text-blue-100 mt-1 font-medium">Unidades</p>
           </div>
-          <div className="bg-white/15 backdrop-blur rounded-xl p-3 text-center">
-            <p className="text-lg font-bold">{formatCurrency(stats.totalValue)}</p>
-            <p className="text-[10px] text-blue-100">Valor Total</p>
+          <div className="bg-white/15 backdrop-blur-sm rounded-xl p-4 text-center card-hover">
+            <p className="text-xl font-bold tracking-tight">{formatCurrency(stats.totalValue)}</p>
+            <p className="text-xs text-blue-100 mt-1 font-medium">Valor Total</p>
           </div>
         </div>
       </div>
 
       {/* Alerts */}
       {(stats.lowStockCount > 0 || stats.outOfStockCount > 0) && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle size={18} className="text-amber-600" />
-            <h3 className="font-semibold text-amber-800 text-sm">Alertas de Stock</h3>
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 card-hover">
+          <div className="flex items-center gap-2 mb-3">
+            <AlertTriangle size={20} className="text-amber-600" />
+            <h3 className="font-semibold text-amber-900">Alertas de Stock</h3>
           </div>
           <div className="flex gap-3">
             {stats.lowStockCount > 0 && (
@@ -83,27 +83,27 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
       )}
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <MetricCard
-          icon={<Package size={18} className="text-blue-600" />}
+          icon={<Package size={20} className="text-blue-600" />}
           label="Variantes"
           value={stats.totalVariants.toString()}
           bgColor="bg-blue-50"
         />
         <MetricCard
-          icon={<TrendingUp size={18} className="text-green-600" />}
+          icon={<TrendingUp size={20} className="text-green-600" />}
           label="Valor Inventario"
           value={formatCurrency(stats.totalValue)}
           bgColor="bg-green-50"
         />
         <MetricCard
-          icon={<DollarSign size={18} className="text-purple-600" />}
+          icon={<DollarSign size={20} className="text-purple-600" />}
           label="Costo Total"
           value={formatCurrency(stats.totalCost)}
           bgColor="bg-purple-50"
         />
         <MetricCard
-          icon={<BarChart3 size={18} className="text-orange-600" />}
+          icon={<BarChart3 size={20} className="text-orange-600" />}
           label="Margen"
           value={stats.totalCost > 0 ? `${Math.round(((stats.totalValue - stats.totalCost) / stats.totalCost) * 100)}%` : '0%'}
           bgColor="bg-orange-50"
@@ -111,9 +111,9 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
       </div>
 
       {/* By Type */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm">
-        <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-          <BarChart3 size={16} className="text-blue-600" />
+      <div className="bg-white rounded-2xl p-5 shadow-md card-hover">
+        <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2 text-lg">
+          <BarChart3 size={20} className="text-blue-600" />
           Por Categoría
         </h3>
         <div className="space-y-2.5">
@@ -148,9 +148,9 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
 
       {/* Recent Movements */}
       {stats.recentMovements.length > 0 && (
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-            <Clock size={16} className="text-blue-600" />
+        <div className="bg-white rounded-2xl p-5 shadow-md card-hover">
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2 text-lg">
+            <Clock size={20} className="text-blue-600" />
             Movimientos Recientes
           </h3>
           <div className="space-y-2">
@@ -183,8 +183,8 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
       )}
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm">
-        <h3 className="font-semibold text-gray-800 mb-3">Acciones Rápidas</h3>
+      <div className="bg-white rounded-2xl p-5 shadow-md card-hover">
+        <h3 className="font-semibold text-gray-900 mb-4 text-lg">Acciones Rápidas</h3>
         <div className="grid grid-cols-3 gap-3">
           <QuickAction emoji="➕" label="Nuevo Modelo" color="bg-blue-50" textColor="text-blue-700" onClick={() => onNavigate('add-model')} />
           <QuickAction emoji="🛒" label="Nueva Venta" color="bg-green-50" textColor="text-green-700" onClick={() => onNavigate('sales')} />
@@ -203,12 +203,12 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
 
 function MetricCard({ icon, label, value, bgColor }: { icon: React.ReactNode; label: string; value: string; bgColor: string }) {
   return (
-    <div className={`${bgColor} rounded-xl p-3`}>
-      <div className="flex items-center gap-2 mb-1">
+    <div className={`${bgColor} rounded-2xl p-4 card-hover cursor-default`}>
+      <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-xs text-gray-600">{label}</span>
+        <span className="text-xs text-gray-600 font-medium">{label}</span>
       </div>
-      <p className="text-lg font-bold text-gray-800">{value}</p>
+      <p className="text-2xl font-bold text-gray-800 tracking-tight">{value}</p>
     </div>
   );
 }
@@ -217,10 +217,10 @@ function QuickAction({ emoji, label, color, textColor, onClick }: { emoji: strin
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-1.5 p-3.5 ${color} rounded-xl active:opacity-80 transition-opacity tap-target`}
+      className={`flex flex-col items-center gap-2 p-4 ${color} rounded-2xl active:scale-95 transition-all tap-target card-hover`}
     >
-      <span className="text-2xl">{emoji}</span>
-      <span className={`text-xs font-medium ${textColor}`}>{label}</span>
+      <span className="text-3xl">{emoji}</span>
+      <span className={`text-xs font-semibold ${textColor}`}>{label}</span>
     </button>
   );
 }
