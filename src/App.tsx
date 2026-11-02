@@ -17,6 +17,7 @@ import SalesList from './components/SalesList';
 import SaleForm from './components/SaleForm';
 import SaleDetail from './components/SaleDetail';
 import Modal from './components/Modal';
+import ScrollToTop from './components/ScrollToTop';
 
 type MobileView = 'dashboard' | 'list' | 'add-model' | 'edit-model' | 'model-detail' | 'add-variant' | 'edit-variant' | 'variant-detail' | 'movements' | 'alerts' | 'sales' | 'add-sale' | 'sale-detail';
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
@@ -332,7 +333,7 @@ export default function App() {
     const showNav = !['add-model', 'edit-model', 'add-variant', 'edit-variant', 'add-sale'].includes(mobileView);
     
     return (
-      <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative">
+      <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative overflow-y-auto">
         <div className={showNav ? 'pb-24 pb-safe' : 'pb-safe'}>
           {(mobileView === 'dashboard' || mobileView === 'list' || mobileView === 'sales') && (
             <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
@@ -399,6 +400,8 @@ export default function App() {
           </div>
         </Modal>
 
+        <ScrollToTop />
+
         {showNav && (
           <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg">
             <div className="max-w-lg mx-auto px-2 py-2" style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}>
@@ -432,6 +435,7 @@ export default function App() {
       onImport={handleImport}
     >
       {renderDesktopView()}
+      <ScrollToTop />
     </DesktopLayout>
   );
 }
