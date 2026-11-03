@@ -1,11 +1,26 @@
 import { useState, useEffect } from 'react';
-import { Plus, Home, List, Settings, X, Camera, Upload, Save, Trash2, Edit, ArrowLeft, ShoppingCart, Download, QrCode, Copy, Check } from 'lucide-react';
+import { Plus, Home, List, Settings, X, Camera, Upload, Save, Trash2, Edit, ArrowLeft, ShoppingCart, Download, QrCode, Copy, Check, Menu } from 'lucide-react';
 import { Equipment, EquipmentType, EquipmentStatus, Sale, DocumentType, PaymentMethod, Customer, SaleItem } from './types';
 import { getEquipment, saveEquipment, addEquipment, updateEquipment, deleteEquipment, getStats, getSales, addSale, deleteSale, exportData, importData, exportToFile, importFromFile } from './utils/storage';
 import { generateInventoryCode, getTypeLabel, getStatusLabel, getStatusColor, getTypeIcon, formatCurrency, generateDocumentNumber } from './utils/inventory';
 
+// Hook para detectar si es móvil
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, [breakpoint]);
+  
+  return isMobile;
+}
+
 // Main App
 export default function App() {
+  const isMobile = useIsMobile();
   const [view, setView] = useState<'dashboard' | 'list' | 'add' | 'edit' | 'sales' | 'add-sale' | 'sale-detail'>('dashboard');
   const [equipment, setEquipment] = useState<Equipment[]>([]);
   const [sales, setSales] = useState<Sale[]>([]);
@@ -65,31 +80,139 @@ export default function App() {
     setView('sales');
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {view === 'dashboard' && <Dashboard equipment={equipment} sales={sales} onNavigate={setView} />}
-      {view === 'list' && <EquipmentList equipment={equipment} onSelect={(e) => { setSelectedEquipment(e); setView('edit'); }} onAdd={() => setView('add')} />}
-      {view === 'add' && <EquipmentForm onSave={handleSaveEquipment} onCancel={() => setView('list')} />}
-      {view === 'edit' && selectedEquipment && <EquipmentForm equipment={selectedEquipment} onSave={handleSaveEquipment} onCancel={() => setView('list')} onDelete={() => handleDeleteEquipment(selectedEquipment.id)} />}
-      {view === 'sales' && <SalesList sales={sales} onSelect={(s) => { setSelectedSale(s); setView('sale-detail'); }} onAdd={() => setView('add-sale')} />}
-      {view === 'add-sale' && <SaleForm equipment={equipment} onSave={handleSaveSale} onCancel={() => setView('sales')} />}
-      {view === 'sale-detail' && selectedSale && <SaleDetail sale={selectedSale} onBack={() => setView('sales')} onDelete={() => handleDeleteSale(selectedSale.id)} />}
+  // Render content based on view
+  const renderContent = () => {
+    switch (view) {
+      case 'dashboard':
+        return <Dashboard equipment={equipment} sales={sales} onNavigate={setView} />;
+      case 'list':
+        return <EquipmentList equipment={equipment} onSelect={(e) => { setSelectedEquipment(e); setView('edit'); }} onAdd={() => setView('add')} />;
+      case 'add':
+        return <EquipmentForm onSave={handleSaveEquipment} onCancel={() => setView('list')} />;
+      case 'edit':
+        return selectedEquipment ? (
+          <EquipmentForm equipment={selectedEquipment} onSave={handleSaveEquipment} onCancel={() => setView('list')} onDelete={() => handleDeleteEquipment(selectedEquipment.id)} />
+        ) : null;
+      case 'sales':
+        return <SalesList sales={sales} onSelect={(s) => { setSelectedSale(s); setView('sale-detail'); }} onAdd={() => setView('add-sale')} />;
+      case 'add-sale':
+        return <SaleForm equipment={equipment} onSave={handleSaveSale} onCancel={() => setView('sales')} />;
+      case 'sale-detail':
+        return selectedSale ? (
+          <SaleDetail sale={selectedSale} onBack={() => setView('sales')} onDelete={() => handleDeleteSale(selectedSale.id)} />
+        ) : null;
+      default:
+        return null;
+    }
+  };
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-        <div className="max-w-lg mx-auto flex items-center justify-around py-2">
-          <NavButton icon={<Home size={22} />} label="Inicio" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
-          <NavButton icon={<List size={22} />} label="Inventario" active={view === 'list' || view === 'add' || view === 'edit'} onClick={() => setView('list')} />
-          <button onClick={() => view === 'sales' ? setView('add-sale') : setView('add')} className="flex flex-col items-center -mt-6">
-            <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
-              <Plus size={28} className="text-white" />
+  // Mobile Layout
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {renderContent()}
+
+        {/* Bottom Navigation */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+          <div className="max-w-lg mx-auto flex items-center justify-around py-2">
+            <NavButton icon={<Home size={22} />} label="Inicio" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
+            <NavButton icon={<List size={22} />} label="Inventario" active={view === 'list' || view === 'add' || view === 'edit'} onClick={() => setView('list')} />
+            <button onClick={() => view === 'sales' ? setView('add-sale') : setView('add')} className="flex flex-col items-center -mt-6">
+              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+                <Plus size={28} className="text-white" />
+              </div>
+              <span className="text-[10px] text-blue-600 font-semibold mt-1">Nuevo</span>
+            </button>
+            <NavButton icon={<ShoppingCart size={22} />} label="Ventas" active={view === 'sales' || view === 'add-sale' || view === 'sale-detail'} onClick={() => setView('sales')} />
+            <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(true)} />
+          </div>
+        </nav>
+
+        {/* Settings Modal */}
+        {showSettings && (
+          <Modal isOpen={showSettings} onClose={() => setShowSettings(false)} title="⚙️ Ajustes">
+            <div className="space-y-3">
+              <button onClick={() => { exportToFile(); setShowSettings(false); }} className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
+                <Download size={22} className="text-blue-600" />
+                <div className="text-left">
+                  <p className="font-medium">Exportar Datos</p>
+                  <p className="text-xs text-gray-500">Descargar inventario en JSON</p>
+                </div>
+              </button>
+              <button onClick={async () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) {
+                    const success = await importFromFile(file);
+                    if (success) {
+                      refreshData();
+                      alert('Datos importados correctamente');
+                      setShowSettings(false);
+                    } else {
+                      alert('Error al importar datos');
+                    }
+                  }
+                };
+                input.click();
+              }} className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
+                <Upload size={22} className="text-green-600" />
+                <div className="text-left">
+                  <p className="font-medium">Importar Datos</p>
+                  <p className="text-xs text-gray-500">Cargar desde archivo JSON</p>
+                </div>
+              </button>
+              <button onClick={() => { setShowSettings(false); setShowSync(true); }} className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
+                <QrCode size={22} className="text-purple-600" />
+                <div className="text-left">
+                  <p className="font-medium">Sincronizar</p>
+                  <p className="text-xs text-gray-500">Compartir entre dispositivos</p>
+                </div>
+              </button>
             </div>
-            <span className="text-[10px] text-blue-600 font-semibold mt-1">Nuevo</span>
-          </button>
-          <NavButton icon={<ShoppingCart size={22} />} label="Ventas" active={view === 'sales' || view === 'add-sale' || view === 'sale-detail'} onClick={() => setView('sales')} />
-          <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(true)} />
+            <div className="border-t pt-4 mt-4">
+              <p className="text-center text-xs text-gray-400">InventarioPro v3.0</p>
+            </div>
+          </Modal>
+        )}
+
+        {/* Sync Modal */}
+        {showSync && <SyncModal isOpen={showSync} onClose={() => setShowSync(false)} onSyncComplete={refreshData} />}
+      </div>
+    );
+  }
+
+  // Desktop Layout
+  return (
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
+        <div className="p-6 border-b border-gray-200">
+          <h1 className="text-xl font-bold text-gray-900">InventarioPro</h1>
+          <p className="text-sm text-gray-500 mt-1">Gestión de equipos</p>
         </div>
-      </nav>
+        
+        <nav className="flex-1 p-4 space-y-2">
+          <SidebarButton icon={<Home size={20} />} label="Dashboard" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
+          <SidebarButton icon={<List size={20} />} label="Inventario" active={view === 'list' || view === 'add' || view === 'edit'} onClick={() => setView('list')} />
+          <SidebarButton icon={<ShoppingCart size={20} />} label="Ventas" active={view === 'sales' || view === 'add-sale' || view === 'sale-detail'} onClick={() => setView('sales')} />
+          <SidebarButton icon={<Plus size={20} />} label="Nuevo Equipo" active={false} onClick={() => setView('add')} />
+          <SidebarButton icon={<Settings size={20} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(true)} />
+        </nav>
+
+        <div className="p-4 border-t border-gray-200">
+          <p className="text-xs text-gray-400 text-center">v3.0</p>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        <div className="max-w-7xl mx-auto p-8">
+          {renderContent()}
+        </div>
+      </main>
 
       {/* Settings Modal */}
       {showSettings && (
@@ -144,6 +267,21 @@ export default function App() {
       {/* Sync Modal */}
       {showSync && <SyncModal isOpen={showSync} onClose={() => setShowSync(false)} onSyncComplete={refreshData} />}
     </div>
+  );
+}
+
+// Sidebar Button for Desktop
+function SidebarButton({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+        active ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'
+      }`}
+    >
+      {icon}
+      <span className="font-medium">{label}</span>
+    </button>
   );
 }
 
