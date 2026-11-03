@@ -1,6 +1,8 @@
+// Tipos de equipos
 export type EquipmentType = 'laptop' | 'aio' | 'monitor' | 'desktop' | 'tablet' | 'printer' | 'phone' | 'other';
 export type EquipmentStatus = 'available' | 'assigned' | 'maintenance' | 'retired';
 
+// Equipo individual
 export interface Equipment {
   id: string;
   inventoryCode: string;
@@ -19,6 +21,7 @@ export interface Equipment {
   updatedAt: string;
 }
 
+// Estadísticas de inventario
 export interface InventoryStats {
   total: number;
   available: number;
@@ -28,7 +31,7 @@ export interface InventoryStats {
   byType: Record<EquipmentType, number>;
 }
 
-// Ventas
+// Tipos para ventas
 export type DocumentType = 'factura' | 'boleta' | 'recibo';
 export type PaymentMethod = 'efectivo' | 'tarjeta' | 'transferencia' | 'yape' | 'plin' | 'credito';
 
@@ -65,4 +68,12 @@ export interface Sale {
   notes: string;
   date: string;
   createdAt: string;
+}
+
+// Datos de sincronización
+export interface SyncData {
+  equipment: Equipment[];
+  sales: Sale[];
+  timestamp: number;
+  deviceId: string;
 }
