@@ -107,52 +107,19 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Mouse wheel scroll behavior */
+  /* Simple scroll behavior - natural mouse wheel scrolling */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
-  /* Enable mouse wheel scrolling on all scrollable elements */
-  [class*="overflow-y"] {
-    scroll-behavior: smooth;
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Enable natural mouse wheel scrolling */
+  * {
     -webkit-overflow-scrolling: touch;
-  }
-
-  /* Desktop specific scroll enhancements */
-  @media (min-width: 769px) {
-    /* Smooth scroll with mouse wheel */
-    html, body {
-      scroll-behavior: smooth;
-    }
-
-    /* Ensure wheel scrolling works on containers */
-    main, .scroll-container, [class*="overflow"] {
-      scroll-behavior: smooth;
-      overscroll-behavior: contain;
-    }
-
-    /* Mouse wheel scroll speed optimization */
-    * {
-      scroll-snap-type: y proximity;
-    }
-
-    /* Prevent scroll hijacking */
-    body {
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-  }
-
-  /* Touch and wheel scroll behavior */
-  .scroll-smooth-custom {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: y proximity;
-  }
-
-  /* Ensure all scrollable containers respond to wheel */
-  [style*="overflow"] {
-    scroll-behavior: smooth;
   }
 
   /* Smooth scrolling */

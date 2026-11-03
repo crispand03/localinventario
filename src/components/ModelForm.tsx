@@ -28,21 +28,46 @@ export default function ModelForm({ model, onSave, onCancel }: ModelFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validación básica
+    if (!brand.trim() || !modelName.trim()) {
+      alert('Por favor completa los campos obligatorios: Marca y Modelo');
+      return;
+    }
+    
     const now = new Date().toISOString();
+    const generateId = () => {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      // Fallback para navegadores antiguos
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    };
+    
     const item: EquipmentModel = {
-      id: model?.id || crypto.randomUUID(),
+      id: model?.id || generateId(),
       type,
-      brand,
-      model: modelName,
-      category,
-      description,
+      brand: brand.trim(),
+      model: modelName.trim(),
+      category: category.trim(),
+      description: description.trim(),
       photo,
       baseSpecs: specs,
       variants: model?.variants || [],
       createdAt: model?.createdAt || now,
       updatedAt: now,
     };
-    onSave(item);
+    
+    try {
+      onSave(item);
+    } catch (error) {
+      console.error('Error al guardar modelo:', error);
+      alert('Error al guardar el modelo. Por favor intenta nuevamente.');
+    }
   };
 
   const updateSpec = (key: keyof Specs, value: string) => {
