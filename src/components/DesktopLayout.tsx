@@ -61,7 +61,7 @@ export default function DesktopLayout({ currentSection, onNavigate, children, on
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden">
         <div className="max-w-7xl mx-auto p-8">
           {children}
         </div>

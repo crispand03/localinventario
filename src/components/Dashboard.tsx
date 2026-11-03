@@ -3,6 +3,7 @@ import { getTypeLabel, getTypeIcon, formatCurrency, formatNumber } from '../util
 import { AlertTriangle, Package, TrendingUp, DollarSign, BarChart3, Clock, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 import IPhoneHelp from './IPhoneHelp';
+import FloatingHelpButton from './FloatingHelpButton';
 import { useIsIOS } from '../hooks/useDevice';
 
 interface DashboardProps {
@@ -197,6 +198,42 @@ export default function Dashboard({ stats, onNavigate }: DashboardProps) {
 
       {/* iPhone Help Modal */}
       <IPhoneHelp isOpen={showHelp} onClose={() => setShowHelp(false)} />
+
+      {/* Floating Help Button */}
+      <FloatingHelpButton
+        tooltips={[
+          {
+            id: 'welcome',
+            title: 'Bienvenido a InventarioPro',
+            message: 'Esta es tu aplicación de gestión de inventario. Aquí puedes ver un resumen de tus equipos, stock y ventas.',
+            icon: '👋'
+          },
+          {
+            id: 'models',
+            title: 'Gestión de Modelos',
+            message: 'Toca "Modelos" en la barra inferior para ver todos tus equipos. Puedes agregar nuevos modelos con fotos, especificaciones técnicas y múltiples variantes.',
+            icon: '💻'
+          },
+          {
+            id: 'sales',
+            title: 'Registro de Ventas',
+            message: 'Toca "Ventas" para registrar nuevas ventas. Genera facturas, boletas o recibos con cálculo automático de IGV y envía por WhatsApp.',
+            icon: '🛒'
+          },
+          {
+            id: 'new',
+            title: 'Botón Nuevo',
+            message: 'El botón azul central te permite agregar rápidamente nuevos modelos o ventas según la sección donde estés.',
+            icon: '➕'
+          },
+          {
+            id: 'settings',
+            title: 'Ajustes',
+            message: 'Desde aquí puedes exportar e importar tus datos. ¡Haz respaldos regularmente!',
+            icon: '⚙️'
+          }
+        ]}
+      />
     </div>
   );
 }

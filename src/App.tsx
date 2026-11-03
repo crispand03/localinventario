@@ -17,6 +17,9 @@ import SalesList from './components/SalesList';
 import SaleForm from './components/SaleForm';
 import SaleDetail from './components/SaleDetail';
 import Modal from './components/Modal';
+import ScrollToTop from './components/ScrollToTop';
+import ScrollProgressBar from './components/ScrollProgressBar';
+import ScrollHint from './components/ScrollHint';
 
 type MobileView = 'dashboard' | 'list' | 'add-model' | 'edit-model' | 'model-detail' | 'add-variant' | 'edit-variant' | 'variant-detail' | 'movements' | 'alerts' | 'sales' | 'add-sale' | 'sale-detail';
 type DesktopSection = 'dashboard' | 'models' | 'sales' | 'movements' | 'alerts' | 'settings';
@@ -332,7 +335,8 @@ export default function App() {
     const showNav = !['add-model', 'edit-model', 'add-variant', 'edit-variant', 'add-sale'].includes(mobileView);
     
     return (
-      <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative">
+      <div className="min-h-screen min-h-[100dvh] bg-gray-50 max-w-lg mx-auto relative overflow-y-auto">
+        <ScrollProgressBar />
         <div className={showNav ? 'pb-24 pb-safe' : 'pb-safe'}>
           {(mobileView === 'dashboard' || mobileView === 'list' || mobileView === 'sales') && (
             <div className="sticky top-0 z-40 bg-blue-700 text-white pt-safe">
@@ -399,26 +403,25 @@ export default function App() {
           </div>
         </Modal>
 
+        <ScrollToTop />
+
         {showNav && (
-          <nav className="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-200 z-40 ios-blur bottom-safe">
-            <div className="max-w-lg mx-auto flex items-center justify-around py-2 pb-safe">
-              <NavButton icon={<Home size={22} />} label="Inicio" active={mobileView === 'dashboard'} onClick={() => setMobileView('dashboard')} />
-              <NavButton icon={<List size={22} />} label="Modelos" active={mobileView === 'list' || mobileView === 'model-detail' || mobileView === 'variant-detail'} onClick={() => setMobileView('list')} />
-              <button onClick={() => setMobileView('sales')}
-                className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors ${
-                  mobileView === 'sales' || mobileView === 'sale-detail' ? 'text-green-600' : 'text-gray-400'
-                }`}>
-                <ShoppingCart size={22} />
-                <span className="text-[10px] font-medium">Ventas</span>
-              </button>
-              <button onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
-                className="flex flex-col items-center -mt-6 tap-target group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-elegant group-active:scale-95 transition-all group-hover:shadow-glow">
-                  <Plus size={30} className="text-white" strokeWidth={2.5} />
-                </div>
-                <span className="text-[11px] text-blue-600 font-semibold mt-1">Nuevo</span>
-              </button>
-              <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
+          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 shadow-lg">
+            <div className="max-w-lg mx-auto px-2 py-2" style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}>
+              <div className="flex items-center justify-around">
+                <NavButton icon={<Home size={22} />} label="Inicio" active={mobileView === 'dashboard'} onClick={() => setMobileView('dashboard')} />
+                <NavButton icon={<List size={22} />} label="Modelos" active={mobileView === 'list' || mobileView === 'model-detail' || mobileView === 'variant-detail'} onClick={() => setMobileView('list')} />
+                <button 
+                  onClick={() => setMobileView(mobileView === 'sales' ? 'add-sale' : 'add-model')}
+                  className="flex flex-col items-center -mt-6 relative">
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+                    <Plus size={28} className="text-white" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-[10px] text-blue-600 font-semibold mt-1">Nuevo</span>
+                </button>
+                <NavButton icon={<ShoppingCart size={22} />} label="Ventas" active={mobileView === 'sales' || mobileView === 'sale-detail' || mobileView === 'add-sale'} onClick={() => setMobileView('sales')} />
+                <NavButton icon={<Settings size={22} />} label="Ajustes" active={showSettings} onClick={() => setShowSettings(!showSettings)} />
+              </div>
             </div>
           </nav>
         )}
@@ -434,7 +437,10 @@ export default function App() {
       onExport={handleExport}
       onImport={handleImport}
     >
+      <ScrollProgressBar />
+      <ScrollHint />
       {renderDesktopView()}
+      <ScrollToTop />
     </DesktopLayout>
   );
 }

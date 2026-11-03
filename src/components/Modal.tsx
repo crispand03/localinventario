@@ -58,7 +58,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md', s
           )}
           
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-5 pb-safe">
+          <div className="flex-1 overflow-y-auto p-5 pb-safe scroll-smooth-custom">
             {children}
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md', s
         )}
         
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 scroll-smooth-custom">
           {children}
         </div>
       </div>
