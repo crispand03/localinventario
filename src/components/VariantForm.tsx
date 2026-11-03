@@ -26,15 +26,35 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validación básica
+    if (!name.trim()) {
+      alert('Por favor ingresa el nombre de la versión');
+      return;
+    }
+    
     const stockNum = parseInt(stock) || 0;
     const minStockNum = parseInt(minStock) || 5;
     const now = new Date().toISOString();
+    
+    const generateId = () => {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      // Fallback para navegadores antiguos
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    };
+    
     const item: Variant = {
-      id: variant?.id || crypto.randomUUID(),
+      id: variant?.id || generateId(),
       modelId: model.id,
-      name,
-      sku: sku.toUpperCase(),
-      inventoryCode: inventoryCode.toUpperCase(),
+      name: name.trim(),
+      sku: sku.toUpperCase().trim(),
+      inventoryCode: inventoryCode.toUpperCase().trim(),
       specs,
       price: parseFloat(price) || 0,
       cost: parseFloat(cost) || 0,
@@ -42,12 +62,18 @@ export default function VariantForm({ model, variant, onSave, onCancel }: Varian
       minStock: minStockNum,
       status: getVariantStatus(stockNum, minStockNum),
       serialNumbers: serialNumbers.split('\n').map(s => s.trim()).filter(Boolean),
-      location,
-      notes,
+      location: location.trim(),
+      notes: notes.trim(),
       createdAt: variant?.createdAt || now,
       updatedAt: now,
     };
-    onSave(item);
+    
+    try {
+      onSave(item);
+    } catch (error) {
+      console.error('Error al guardar variante:', error);
+      alert('Error al guardar la variante. Por favor intenta nuevamente.');
+    }
   };
 
   const updateSpec = (key: keyof Specs, value: string) => {
